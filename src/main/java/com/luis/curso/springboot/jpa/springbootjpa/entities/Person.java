@@ -10,9 +10,11 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "programing_language")
+    @Column(name = "programming_language")
     private String programmingLanguaje;
 
     public Person() {
