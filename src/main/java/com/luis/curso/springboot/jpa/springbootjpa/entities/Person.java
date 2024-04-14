@@ -15,16 +15,16 @@ public class Person {
     private String lastName;
 
     @Column(name = "programming_language")
-    private String programmingLanguaje;
+    private String programmingLanguage;
 
     public Person() {
     }
 
-    public Person(Long id, String name, String lastName, String programmingLanguaje) {
+    public Person(Long id, String name, String lastName, String programmingLanguage) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
-        this.programmingLanguaje = programmingLanguaje;
+        this.programmingLanguage = programmingLanguage;
     }
 
     public Long getId() {
@@ -52,11 +52,11 @@ public class Person {
     }
 
     public String getProgrammingLanguaje() {
-        return programmingLanguaje;
+        return programmingLanguage;
     }
 
-    public void setProgrammingLanguaje(String programmingLanguaje) {
-        this.programmingLanguaje = programmingLanguaje;
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Person {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", programmingLanguaje='" + programmingLanguaje + '\'' +
+                ", programmingLanguage='" + programmingLanguage + '\'' +
                 '}';
     }
 }
