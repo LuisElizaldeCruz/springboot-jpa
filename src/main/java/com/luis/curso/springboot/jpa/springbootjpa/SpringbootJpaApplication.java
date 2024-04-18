@@ -1,5 +1,6 @@
 package com.luis.curso.springboot.jpa.springbootjpa;
 
+import com.luis.curso.springboot.jpa.springbootjpa.dto.PersonDto;
 import com.luis.curso.springboot.jpa.springbootjpa.entities.Person;
 import com.luis.curso.springboot.jpa.springbootjpa.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,33 @@ public class SpringbootJpaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         //findOne();
-         //create();
+        //create();
         //update();
         //delete();
         //delete2();
-        personalizeQueries();
+        personalizeQueries2();
     }
 
     @Transactional(readOnly = true)
-    public void personalizeQueries(){
+    public void personalizeQueries2() {
+        System.out.println("============ Consulta por objeto persona y lenguaje de programacion ============");
+        List<Object[]> personRegs = repository.findAllMixPerson();
+
+        personRegs.forEach(reg -> {
+            System.out.println("Programing lenguage" + reg[1] + ", person=" + reg[0]);
+        });
+        System.out.println("Consulta que puebla y devuelve objeto entity de una instancia personalizada");
+        List<Person> persons = repository.findAllObjectPersonPersonalized();
+        persons.forEach(per -> System.out.println(per));
+
+        System.out.println("Consulta que puebla y devuelve objeto dto de una clase personalizada");
+        List<PersonDto> personDto = repository.findAllPersonDto();
+        personDto.forEach(System.out::println);//metodo por referencia
+    }
+
+
+    @Transactional(readOnly = true)
+    public void personalizeQueries() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("============ Consulta solo el nombre por el id ============");
         System.out.println("Ingrese el id ");
@@ -54,12 +73,13 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
         System.out.println("============ Consulta por campos personalizados por el id ============");
         Object[] personReg = (Object[]) repository.obtenerPersonDataById(id);
-        System.out.println("id="+personReg[0] + ", nombre= " + personReg[1]+ ", apellido="+personReg[2]+ ", lenguaje="+personReg[3]);
+        System.out.println("id=" + personReg[0] + ", nombre= " + personReg[1] + ", apellido=" + personReg[2] + ", lenguaje=" + personReg[3]);
 
         System.out.println("============ Consulta por campos personalizados lista ============");
         List<Object[]> regs = repository.obtenerPersonDataList();
-        regs.forEach(reg -> System.out.println("id="+reg[0] + ", nombre= " + reg[1]+ ", apellido="+reg[2]+ ", lenguaje="+reg[3]));
+        regs.forEach(reg -> System.out.println("id=" + reg[0] + ", nombre= " + reg[1] + ", apellido=" + reg[2] + ", lenguaje=" + reg[3]));
     }
+
     @Transactional
     public void delete() {
         Scanner scanner = new Scanner(System.in);
