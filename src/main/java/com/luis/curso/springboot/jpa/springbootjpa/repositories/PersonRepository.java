@@ -12,6 +12,32 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    @Query("select p from Person p where p.name between 'J' and 'P'")
+    List<Person> findAllBetweenName();
+
+    @Query("select p from Person p where p.id between 2 and 5")
+    List<Person> findAllBetweenId();
+
+    @Query("select upper(p.name || ' ' || p.lastName) from Person p")
+    List<String> findAllFullNameUpper();
+
+    @Query("select lower(concat(p.name,' ', p.lastName)) from Person p")
+    List<String> findAllFullNameLower();
+
+    //@Query("select concat(p.name,' ', p.lastName) from Person p")
+    @Query("select p.name || ' ' || p.lastName from Person p")
+    List<String> findAllFullNameConcat();
+
+    @Query("select distinct(p.programmingLanguage) from Person p")
+    List<String> findAllProgrammingLanguagesDistinct();
+
+    @Query("select p.name from Person p")
+    List<String> findAllNames();
+
+    @Query("select distinct(p.name) from Person p")
+    List<String> findAllNamesDistinct();
+
+
     @Query("select new com.luis.curso.springboot.jpa.springbootjpa.dto.PersonDto(p.name, p.lastName) from Person p")
     List<PersonDto> findAllPersonDto();
 
@@ -60,7 +86,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     Object obtenerPersonDataById(Long id);
 
     List<Person> findByProgrammingLanguageAndName(String programmingLanguage, String name);
-
 
 
 }

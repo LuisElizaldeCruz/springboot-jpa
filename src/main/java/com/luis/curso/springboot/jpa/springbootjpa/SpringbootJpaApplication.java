@@ -31,7 +31,55 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         //update();
         //delete();
         //delete2();
-        personalizeQueries2();
+        //personalizeQueries2();
+        //personalizedQueriesDistinct();
+        //personalizedQueriesConcatUpperAndLowerCase();
+        personalizedQueriesBetween();
+    }
+
+    @Transactional(readOnly = true)
+    public void personalizedQueriesBetween() {
+        System.out.println("============ consulta por rangos de ID============");
+        List<Person> persons = repository.findAllBetweenId();
+        persons.forEach(System.out::println);
+
+        System.out.println("============ consulta por rangos de caracteres entre j y p ============");
+        persons = repository.findAllBetweenName();
+        persons.forEach(System.out::println);
+
+    }
+
+    @Transactional(readOnly = true)
+    public void personalizedQueriesConcatUpperAndLowerCase() {
+        System.out.println("============ Consulta de nombres y apellidos de personas ============");
+        List<String> names = repository.findAllFullNameConcat();
+        names.forEach(name -> System.out.println(name));
+
+        System.out.println("============ Consulta de nombres y apellidos de personas en minuscula ============");
+        names = repository.findAllFullNameLower();
+        names.forEach(name -> System.out.println(name));
+
+        System.out.println("============ Consulta de nombres y apellidos de personas en mayuscula ============");
+        names = repository.findAllFullNameUpper();
+        names.forEach(name -> System.out.println(name));
+
+
+    }
+
+    @Transactional(readOnly = true)
+    public void personalizedQueriesDistinct() {
+        System.out.println("============ Consulta con  nombre de personas ============");
+        List<String> names = repository.findAllNames();
+        names.forEach(System.out::println);
+
+        System.out.println("============ consultas con nombres unicos ============");
+        names = repository.findAllNamesDistinct();
+        names.forEach(System.out::println);
+
+        System.out.println("============ consultas con lenguajes de programacion unicos ============");
+        List<String> progLanguages = repository.findAllProgrammingLanguagesDistinct();
+        progLanguages.forEach(pl -> System.out.println(pl));
+
     }
 
     @Transactional(readOnly = true)
