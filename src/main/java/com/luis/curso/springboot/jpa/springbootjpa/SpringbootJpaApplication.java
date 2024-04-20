@@ -34,17 +34,54 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         //personalizeQueries2();
         //personalizedQueriesDistinct();
         //personalizedQueriesConcatUpperAndLowerCase();
-        personalizedQueriesBetween();
+        //personalizedQueriesBetween();
+        queriesFunctionAgregation();
+    }
+
+    @Transactional(readOnly = true)
+    public void queriesFunctionAgregation() {
+
+        System.out.println("============ consulta con el total de registros de la tabla persona ============");
+        Long count = repository.getTotalPerson();
+        System.out.println(count);
+
+        System.out.println("============ consulta con el valor minimo del id ============");
+        Long min = repository.getMinId();
+        System.out.println(min);
+
+        System.out.println("============ consulta con el valor maximo del id ============");
+        Long max = repository.getMaxId();
+        System.out.println(max);
+
+        System.out.println("============  consulta con el nombre y su largo ============ ");
+        List<Object[]> regs = repository.getPersonNameLength();
+        regs.forEach(reg -> {
+            String name = (String) reg[0];
+            Integer length = (Integer) reg[1];
+            System.out.println("name= " + name + " length= " + length);
+        });
+
+        System.out.println("============ consulta con el nombre mas corto ============");
+        Integer minLengthName = repository.getMinLengthName();
+        System.out.println(minLengthName);
+
+        System.out.println("============ consulta con el nombre mas largo ============");
+        Integer maxLengthName = repository.getMaxLengthName();
+        System.out.println(maxLengthName);
+
     }
 
     @Transactional(readOnly = true)
     public void personalizedQueriesBetween() {
         System.out.println("============ consulta por rangos de ID============");
-        List<Person> persons = repository.findAllBetweenId();
+        List<Person> persons = repository.findByidBetween(2L, 5L);
         persons.forEach(System.out::println);
 
         System.out.println("============ consulta por rangos de caracteres entre j y p ============");
-        persons = repository.findAllBetweenName();
+        persons = repository.findAllBetweenName("J", "Q");
+        persons.forEach(System.out::println);
+
+        persons = repository.getAllOrder();
         persons.forEach(System.out::println);
 
     }
@@ -62,7 +99,6 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         System.out.println("============ Consulta de nombres y apellidos de personas en mayuscula ============");
         names = repository.findAllFullNameUpper();
         names.forEach(name -> System.out.println(name));
-
 
     }
 
