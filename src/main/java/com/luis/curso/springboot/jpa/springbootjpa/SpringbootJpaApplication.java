@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -35,7 +36,32 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         //personalizedQueriesDistinct();
         //personalizedQueriesConcatUpperAndLowerCase();
         //personalizedQueriesBetween();
-        queriesFunctionAgregation();
+        // queriesFunctionAgregation();
+        //subQueries();
+        whereIn();
+
+    }
+
+    @Transactional(readOnly = true)
+    public void whereIn() {
+        System.out.println("============ consulta ehre in ============");
+        List<Person> persons = repository.getPersonsByIds(Arrays.asList(1L, 2L, 5L, 7L));
+        persons.forEach(System.out::println);
+    }
+
+    @Transactional(readOnly = true)
+    public void subQueries() {
+        System.out.println("============ consulta por el nombre mas corto y su largo ============");
+        List<Object[]> registers = repository.getShortedName();
+        registers.forEach(reg -> {
+            String name = (String) reg[0];
+            Integer length = (Integer) reg[1];
+            System.out.println("name=" + name + " length=" + length);
+        });
+
+        System.out.println("============ consulta para obtener el ultimo registro de personas ============");
+        Optional<Person> optionalPerson = repository.getLastRegistration();
+        optionalPerson.ifPresent(System.out::println);
     }
 
     @Transactional(readOnly = true)
@@ -69,6 +95,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         Integer maxLengthName = repository.getMaxLengthName();
         System.out.println(maxLengthName);
 
+        System.out.println("============ consulta con funciones de agregacion min, max, sum, avg, count ============");
+        Object[] resumeReg = (Object[]) repository.getResumeAggregationFunction();
+        System.out.println("min=" + resumeReg[0] + ", max=" + resumeReg[1] + ", sum=" + resumeReg[2] + " avg=" + resumeReg[3] + " count=" + resumeReg[4]);
     }
 
     @Transactional(readOnly = true)

@@ -12,6 +12,18 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    @Query("select p from Person p where p.id in ?1")
+    public List<Person> getPersonsByIds(List<Long> ids);
+
+    @Query("select p.name, length(p.name) from Person p where length(p.name) = (select min(length(p.name)) from Person p)")
+    public List<Object[]> getShortedName();
+
+    @Query("select p from Person p where p.id=(select max(p.id) from Person p)")
+    public Optional<Person> getLastRegistration();
+
+    @Query("select min(p.id), max(p.id), sum(p.id), avg(length(p.name)), count(p.id) from Person p")
+    public Object getResumeAggregationFunction();
+
     @Query("select min(length(p.name)) from Person p")
     public Integer getMinLengthName();
 
@@ -111,6 +123,5 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     Object obtenerPersonDataById(Long id);
 
     List<Person> findByProgrammingLanguageAndName(String programmingLanguage, String name);
-
 
 }
